@@ -1,0 +1,21 @@
+/* 1. 定义本地字体 */
+@font-face {
+    font-family: 'MyPixelFont'; /* 你给这个字体起的名字 */
+    src: url('../fonts/pixel.ttf') format('truetype'); /* 路径要对 */
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 2. 应用到全局 */
+* {
+    font-family: 'MyPixelFont', sans-serif;
+    /* 解决像素字体模糊的黑科技代码 */
+    image-rendering: pixelated;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 你之前的代码 */
+#xuantin:hover {
+    color: red;
+}
