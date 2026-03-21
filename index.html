@@ -10,7 +10,6 @@
     <h1>欢迎光临</h1>
     <h2>登录</h2>
 
-    <form>
         <div class="game-card">
         <h2 style="margin-top: 0;">终端访问</h2>
         <div class="login-terminal">
@@ -32,15 +31,25 @@
         var pass = document.getElementById("password").value;
         
         // 这里设置你想要的特定值，比如账号 yiloko 密码 123456
-        if(user === "yiloko" && pass === "123456") {
-            alert("访问授权成功，正在跳转终端...");
-            window.location.href = "https://space.bilibili.com/348652880"; // 跳转的目标网站
-        } else {
+        if (user === "yiloko" && pass === "123456") {
+    alert("访问授权成功，正在开启下载...");
+
+    // 结合下载标签：动态创建一个 a 标签并触发点击
+    const downloadLink = document.createElement('a');
+    downloadLink.href = '/files/1.7z'; // 对应你之前的 href
+    downloadLink.download = '项目文件.zip';      // 对应你之前的 download 属性
+    
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    // 下载触发后跳转到目标网站
+    window.location.href = "https://html.yiloko.com"; 
+} else {
             alert("身份验证失败：无效的凭证。");
         }
     }
     </script>
-    </form>
 
     <h2>关于我：</h2>
     <p>上海三本在读网络与新媒体专业大学生，目前正在备战JLPT N2</p>
