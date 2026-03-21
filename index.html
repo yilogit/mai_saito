@@ -7,15 +7,41 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <h1>mai_saito</h1>
+    <h1>欢迎光临</h1>
     <h2>登录</h2>
+
     <form>
-        <label for="username">用户名:</label>
-        <input type="text" placeholder="请输入用户名">
-        <br>
-        <label for="password">密码:</label>
-        <input type="text" placeholder="请输入密码">
+        <div class="game-card">
+        <h2 style="margin-top: 0;">终端访问</h2>
+        <div class="login-terminal">
+            <div class="input-group">
+                <label for="username">USER:</label>
+                <input type="text" id="username" placeholder="请输入用户名">
+            </div>
+            <div class="input-group">
+                <label for="password">PASS:</label>
+                <input type="password" id="password" placeholder="请输入密码">
+            </div>
+            <button onclick="checkLogin()" class="login-btn">ENTER / 登录</button>
+        </div>
+    </div>
+
+    <script>
+    function checkLogin() {
+        var user = document.getElementById("username").value;
+        var pass = document.getElementById("password").value;
+        
+        // 这里设置你想要的特定值，比如账号 yiloko 密码 123456
+        if(user === "yiloko" && pass === "123456") {
+            alert("访问授权成功，正在跳转终端...");
+            window.location.href = "https://space.bilibili.com/348652880"; // 跳转的目标网站
+        } else {
+            alert("身份验证失败：无效的凭证。");
+        }
+    }
+    </script>
     </form>
+
     <h2>关于我：</h2>
     <p>上海三本在读网络与新媒体专业大学生，目前正在备战JLPT N2</p>
     欢迎关注我的B站账号 <a href="https://space.bilibili.com/348652880">yiloko</a>
