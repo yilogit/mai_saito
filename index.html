@@ -32,19 +32,8 @@
         
         // 这里设置你想要的特定值，比如账号 yiloko 密码 123456
         if (user === "yiloko" && pass === "123456") {
-    alert("访问授权成功，正在开启下载...");
-
-    // 结合下载标签：动态创建一个 a 标签并触发点击
-    const downloadLink = document.createElement('a');
-    downloadLink.href = '/files/1.7z'; // 对应你之前的 href
-    downloadLink.download = '项目文件.zip';      // 对应你之前的 download 属性
-    
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-
-    // 下载触发后跳转到目标网站
-    window.location.href = "https://html.yiloko.com"; 
+    alert("访问授权成功，跳转中");
+    window.location.href = "https://blog.yiloko.com"; 
 } else {
             alert("身份验证失败：无效的凭证。");
         }
