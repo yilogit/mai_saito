@@ -1,24 +1,14 @@
-/* 1. 定义本地字体 - 这里的路径和文件名必须和仓库完全一致 */
-@font-face {
-    font-family: 'MyPixelFont';
-    /* 这里的名字改成了你上传的那个文件名 */
-    src: url('../fonts/DotGothic16-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+/* 颜色 */
+*{
+    background-color: rgb(174, 160, 199);
 }
-
-/* 2. 应用到全局 */
-* {
-    /* 优先使用像素字体，如果加载失败则使用无衬线字体 */
-    font-family: 'MyPixelFont', sans-serif;
-    
-    /* 像素风核心设置：禁止浏览器平滑字体，让字迹有棱有角 */
-    image-rendering: pixelated;
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: grayscale;
+.wancheng{
+   background-color: #2d5a27;
+            color: #e0e0e0;
+            width: 50px;
 }
-
-/* 悬停效果 */
-#xuantin:hover {
-    color: red;
+.weiwancheng{
+    background-color: #881400;
+            color: #ffffff;
+            width: 50px;
 }
