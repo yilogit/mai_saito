@@ -1,19 +1,30 @@
-/* 颜色 */
-*{
+@font-face {
+    font-family: 'zi_ti';
+    src: url('../fonts/DotGothic16-Regular.ttf');
+    font-display: swap;
+}
+
+body {
     background-color: rgb(174, 160, 199);
+    font-family: 'zi_ti', sans-serif;
+    margin: 0;
+    padding: 20px;
 }
-.wancheng{
-   background-color: #2d5a27;
-            color: #e0e0e0;
-            padding: 4px 10px;
-            border: 2px solid #4a9540;
-            display: inline-block;
-            
+
+.wancheng {
+    background-color: #2d5a27;
+    color: #e0e0e0;
+    padding: 4px 10px;
+    border: 2px solid #4a9540;
+    display: inline-block;
+    margin: 5px;
 }
-.weiwancheng{
+
+.weiwancheng {
     background-color: #881400;
-            color: #ffffff;
-            padding: 4px 10px;
-            border: 2px solid #be1e00;
-            display: inline-block;
+    color: #ffffff;
+    padding: 4px 10px;
+    border: 2px solid #be1e00;
+    display: inline-block;
+    margin: 5px;
 }
