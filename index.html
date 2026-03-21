@@ -57,10 +57,11 @@
 <div id="aplayer"></div>
 
 <script>
-    const ap = new APlayer({
-        container: document.getElementById('aplayer'),
-        fixed: true,          // 开启吸底模式，固定在左下角
-        lrcType: 0,           // 如果没歌词就设为 0
+  const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    fixed: true,
+    lrcType: 0,
+    theme: '#ffffff', // 配合毛玻璃效果，使用白色主题色
         audio: [
             {
                 name: '神様のいうとおり',
