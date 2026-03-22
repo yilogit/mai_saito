@@ -149,10 +149,10 @@ h1 {
 /* --- APlayer美化 --- */
 /*播放器主体*/
 .aplayer.aplayer-fixed .aplayer-body {
-    background: rgba(0, 0, 0, 0.6) !important; /* 核心：改用 60% 透明度的黑色 */
-    backdrop-filter: blur(15px) !important;    /* 增强模糊感，更有深夜氛围 */
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(15px) !important;
     -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(0, 0, 0, 0.5) !important; /* 加入你喜欢的复古绿边框 */
+    border: 1px solid rgba(0, 0, 0, 0.5) !important;
     box-shadow: 0 0 15px rgba(65, 0, 228, 0.5) !important;
 }
 /*文字颜色*/
@@ -161,7 +161,7 @@ h1 {
     text-shadow: 0 0 5px rgba(0, 55, 255, 0.3);
 }
 .aplayer .aplayer-info .aplayer-music .aplayer-author {
-    color: #000000 !important; /* 歌手名改用复古绿，增加辨识度 */
+    color: #000000 !important;
 }
 /*播放列表*/
 .aplayer .aplayer-list {
@@ -188,4 +188,44 @@ h1 {
 /*正在播放的曲目*/
 .aplayer .aplayer-list ol li.aplayer-list-light {
     background: rgba(74, 149, 64, 0.3) !important; 
+}
+/* 邮箱链接 */
+/* 1. 基础链接样式 */
+.email-link {
+    color: #4a9540;
+    text-decoration: none;
+    font-family: 'MyPixelFont', sans-serif;
+    position: relative;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px #4a9540;
+}
+
+/* 2. 准备隐藏的邮箱地址 */
+.email-link::after {
+    content: " [2900502480@qq.com]"; 
+    opacity: 0;
+    margin-left: 10px;
+    color: #fff;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: inline-block;
+    transform: translateX(-10px);
+    pointer-events: none;
+}
+
+/* 3. 悬停时的动作 */
+.email-link:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #4a9540;
+}
+
+.email-link:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+    text-shadow: 0 0 8px #4a9540;
+}
+
+/* 4. 前面的 >> 符号加闪烁 */
+.terminal-prefix {
+    color: #4a9540;
+    animation: blink 1s infinite;
 }
