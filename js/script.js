@@ -22,6 +22,38 @@ document.addEventListener('keydown', (e) => {
         document.getElementById('centerMenuOverlay').classList.remove('active');
     }
 });
+function updateCountdown() {
+    // 设定目标日期：2026年7月5日 09:00:00
+    const targetDate = new Date('2026-07-05T09:00:00').getTime();
+    const now = new Date().getTime();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+        document.querySelector('.timer-display').innerHTML = "MISSION_START";
+        return;
+    }
+
+    // 计算天、时、分、秒
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    // 格式化数字（补零）
+    document.getElementById('days').textContent = d.toString().padStart(3, '0');
+    document.getElementById('hours').textContent = h.toString().padStart(2, '0');
+    document.getElementById('minutes').textContent = m.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = s.toString().padStart(2, '0');
+
+    // 进度条演示逻辑（假设从180天开始倒计时）
+    const totalDays = 180; 
+    const progressPercent = Math.max(0, Math.min(100, (1 - d / totalDays) * 100));
+    document.getElementById('progress').style.width = progressPercent + "%";
+}
+
+// 每秒更新
+setInterval(updateCountdown, 1000);
+updateCountdown();
 // 播放器
 window.onload = function(){
 const ap = new APlayer({

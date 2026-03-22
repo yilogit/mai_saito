@@ -303,3 +303,47 @@ h1 {
     font-size: 0.8rem;
     border-top: 1px dashed #333;
 }
+.mission-timer {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #4a9540;
+    padding: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    width: fit-content;
+    box-shadow: 0 0 15px rgba(74, 149, 64, 0.2);
+}
+
+.timer-title {
+    color: #4a9540;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.timer-display {
+    color: #fff;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px #4a9540;
+}
+
+.timer-display small {
+    font-size: 0.6rem;
+    color: #4a9540;
+    margin-right: 8px;
+}
+
+/* 进度条：模拟数据加载感 */
+.timer-bar {
+    width: 100%;
+    height: 4px;
+    background: #111;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+#progress {
+    height: 100%;
+    background: #4a9540;
+    width: 0%; /* 初始宽度 */
+    box-shadow: 0 0 10px #4a9540;
+    transition: width 1s linear;
+}
