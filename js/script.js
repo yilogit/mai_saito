@@ -10,6 +10,18 @@
             alert("身份验证失败：无效的凭证。");
         }
     }
+function toggleCenterMenu() {
+    const menu = document.getElementById('centerMenuOverlay');
+    // 切换 active 类名
+    menu.classList.toggle('active');
+}
+
+// 按 ESC 键也能关闭
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+        document.getElementById('centerMenuOverlay').classList.remove('active');
+    }
+});
 // 播放器
 window.onload = function(){
 const ap = new APlayer({

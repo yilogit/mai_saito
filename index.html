@@ -27,9 +27,7 @@
             <button onclick="checkLogin()" class="login-btn">ENTER / 登录</button>
         </div>
     </div>
-
-
-<button style="background-color: blue; color: yellowgreen;" onclick="openMenu()">点餐</button>
+<button style="background-color: blue; color: yellowgreen;" onclick="toggleCenterMenu()">菜单</button>
     <h2>关于我：</h2>
     <div>
         <img src="./icon/madotuki.jpg" style="position: absolute;width: 300px; left: 450px; top: 450px;">
@@ -52,5 +50,24 @@
 <!-- 调用Aplayer音乐播放器 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <div id="aplayer"></div>
+<div id="centerMenuOverlay" class="center-overlay" onclick="toggleCenterMenu()">
+    <div class="center-window" onclick="event.stopPropagation()">
+        <div class="window-header">
+            <span>TERMINAL_v2.0</span>
+            <span class="close-x" onclick="toggleCenterMenu()">[X]</span>
+        </div>
+        
+        <div class="window-content">
+            <ul class="nav-links">
+                <li><a href="#profile">01. 个人档案 / PROFILE</a></li>
+                <li><a href="#music">02. 音乐矩阵 / AUDIO_MATRIX</a></li>
+                <li><a href="#design">03. 视觉工程 / VISUAL_LOG</a></li>
+                <li><a href="mailto:yourname@example.com">04. 建立连接 / CONNECT</a></li>
+            </ul>
+        </div>
+        
+        <div class="window-footer">STATUS: SYSTEM_READY...</div>
+    </div>
+</div>
 </body>
 </html>

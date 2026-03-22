@@ -199,7 +199,6 @@ h1 {
     transition: all 0.3s ease;
     text-shadow: 0 0 5px #4a9540;
 }
-
 /* 2. 准备隐藏的邮箱地址 */
 .email-link::after {
     content: " [2900502480@qq.com]"; 
@@ -211,21 +210,96 @@ h1 {
     transform: translateX(-10px);
     pointer-events: none;
 }
-
 /* 3. 悬停时的动作 */
 .email-link:hover {
     color: #fff;
     text-shadow: 0 0 10px #4a9540;
 }
-
 .email-link:hover::after {
     opacity: 1;
     transform: translateX(0);
     text-shadow: 0 0 8px #4a9540;
 }
-
 /* 4. 前面的 >> 符号加闪烁 */
 .terminal-prefix {
     color: #4a9540;
     animation: blink 1s infinite;
+}
+/* 菜单 */
+.center-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+.center-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+.center-window {
+    background-image: url('../icon/ct.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 4px solid #702e6b;
+    outline: 4px solid #6e3c85;
+    width: 70vw;
+    height: 60vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transform: scale(0.8) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.center-overlay.active .center-window {
+    transform: scale(1) translateY(0);
+}
+.window-header {
+    background: #160546;
+    color: #1100ff;
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-family: monospace;
+}
+.window-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav-links {
+    list-style: none;
+    padding: 0;
+}
+.nav-links li { margin: 25px 0; }
+
+.nav-links a {
+    color: #8d31c2; /* 你的暗紫色 */
+    text-decoration: none;
+    font-size: 1.8rem;
+    transition: 0.3s;
+    text-shadow: 0 0 5px #8d31c2;
+}
+.nav-links a:hover {
+    color: #4a9540;
+    text-shadow: 0 0 15px #4a9540;
+    padding-left: 15px;
+}
+.window-footer {
+    padding: 10px;
+    color: #444;
+    font-size: 0.8rem;
+    border-top: 1px dashed #333;
 }
