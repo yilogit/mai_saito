@@ -1,1 +1,99 @@
-.
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mai_saito</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <!-- 引用script -->
+    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+    <script src="./js/script.js"></script>
+<h1>欢迎光临</h1>
+    <div class="game-card">
+        <h2 style="margin-top: 0; color: #ffffff; text-shadow: 0 0 7px #ff0000,0 0 10px #8d31c2,0 0 21px #8d31c2;">终端访问</h2>
+        <div class="login-terminal">
+             <div class="input-group">
+                <label for="username">USER:</label>
+                <input type="text" id="username" placeholder="请输入用户名">
+            </div>
+
+             <div class="input-group">
+                <label for="password">PASS:</label>
+                <input type="password" id="password" placeholder="请输入密码">
+            </div>
+
+            <button onclick="checkLogin()" class="login-btn">ENTER / 登录</button>
+        </div>
+    </div>
+<button style="background-color: blue; color: yellowgreen;" onclick="toggleCenterMenu()">菜单</button>
+    <h2>关于我：</h2>
+    <div>
+        <h2>大学生,备战JLPT N2中</h2>
+    </div>
+    联系方式:
+<div class="contact-section">
+    <span class="terminal-prefix">>> </span>
+    <a href="mailto:2900502480@qq.com" class="email-link" data-email="2900502480@qq.com">
+        CONTACT_OWNER
+    </a>
+</div>
+    <h2>学习进度</h2>
+    <ul>
+        <div class="wancheng">HTML</div>
+        <div class="wancheng">CSS</div>
+        <div class="weiwancheng">JS</div>
+        <div class="weiwancheng">N2</div>
+    </ul>
+<!-- 调用Aplayer音乐播放器 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+    <div id="aplayer"></div>
+<div id="centerMenuOverlay" class="center-overlay" onclick="toggleCenterMenu()">
+    <div class="center-window" onclick="event.stopPropagation()">
+        <div class="window-header">
+            <span>TERMINAL_v2.0</span>
+            <span class="close-x" onclick="toggleCenterMenu()">[X]</span>
+        </div>
+
+        <div class="window-content">
+            <ul class="nav-links">
+                <li><a href="https://gemini.google.com">Gemini</a></li>
+                <li><a href="https://vercel.com">Vercel</a></li>
+                <li><a href="https://github.com">Github</a></li>
+                <li><a href="https://blog.yiloko.com">Yiloko</a></li>
+            </ul>
+        </div>
+
+        <div class="window-footer">STATUS: SYSTEM_READY...</div>
+    </div>
+</div>
+<!-- 倒计时 -->
+ <div class="mission-timer" id="jlptTimer">
+    <div class="timer-header">
+        <span class="status-dot"></span>
+        MISSION_TARGET: JLPT_N2
+    </div>
+    <div class="timer-body">
+        <div class="time-unit">
+            <span id="days">000</span><small>D</small>
+        </div>
+        <div class="time-unit">
+            <span id="hours">00</span><small>H</small>
+        </div>
+        <div class="time-unit">
+            <span id="minutes">00</span><small>M</small>
+        </div>
+        <div class="time-unit">
+            <span id="seconds">00</span><small>S</small>
+        </div>
+    </div>
+    <div class="timer-footer">
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
