@@ -303,47 +303,82 @@ h1 {
     font-size: 0.8rem;
     border-top: 1px dashed #333;
 }
+/* 倒计时 */
 .mission-timer {
-    background: rgba(0, 0, 0, 0.6);
+    /* ========================================= */
+    /* 🛠️ 位置调整区 (只需修改这里) */
+    /* ========================================= */
+    position: fixed;      /* fixed 是固定在屏幕，absolute 是固定在父容器 */
+    bottom: 30px;         /* 距离底部距离 (设为 auto 则失效) */
+    right: 30px;          /* 距离右侧距离 (设为 auto 则失效) */
+    top: auto;            /* 距离顶部距离 */
+    left: auto;           /* 距离左侧距离 */
+    z-index: 10000;       /* 确保在所有东西最上面 */
+    /* ========================================= */
+
+    background: rgba(0, 0, 0, 0.85);
     border: 2px solid #4a9540;
     padding: 15px;
     font-family: 'Courier New', Courier, monospace;
-    width: fit-content;
-    box-shadow: 0 0 15px rgba(74, 149, 64, 0.2);
+    min-width: 220px;
+    box-shadow: 0 0 15px rgba(74, 149, 64, 0.3);
+    backdrop-filter: blur(5px);
 }
 
-.timer-title {
+.timer-header {
     color: #4a9540;
-    font-size: 0.8rem;
+    font-size: 11px;
     margin-bottom: 10px;
-    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(74, 149, 64, 0.3);
+    padding-bottom: 5px;
 }
 
-.timer-display {
+/* 模拟系统运行的小绿点闪烁 */
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background: #4a9540;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.timer-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
     color: #fff;
-    font-size: 1.5rem;
+}
+
+.time-unit span {
+    font-size: 24px;
+    font-weight: bold;
     text-shadow: 0 0 10px #4a9540;
 }
 
-.timer-display small {
-    font-size: 0.6rem;
+.time-unit small {
     color: #4a9540;
-    margin-right: 8px;
+    font-size: 10px;
+    margin-left: 2px;
 }
 
-/* 进度条：模拟数据加载感 */
-.timer-bar {
+.progress-container {
     width: 100%;
-    height: 4px;
-    background: #111;
-    margin-top: 10px;
-    overflow: hidden;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 12px;
 }
 
-#progress {
+#progress-bar {
     height: 100%;
     background: #4a9540;
-    width: 0%; /* 初始宽度 */
-    box-shadow: 0 0 10px #4a9540;
+    width: 0%;
+    box-shadow: 0 0 8px #4a9540;
     transition: width 1s linear;
 }

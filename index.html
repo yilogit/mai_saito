@@ -6,10 +6,10 @@
     <title>mai_saito</title>
     <link rel="stylesheet" href="./css/style.css">
     <script>
-    // if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-    //     // 如果检测到是手机访问，跳转到移动版页面
-    //     window.location.href = "m.index.html";
-    // }
+    if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+        // 如果检测到是手机访问，跳转到移动版页面
+        window.location.href = "m.index.html";
+    }
 </script>
 </head>
 <body>
@@ -42,7 +42,7 @@
     联系方式:
 <div class="contact-section">
     <span class="terminal-prefix">>> </span>
-    <a href="2900502480@qq.com" class="email-link" data-email="2900502480@qq.com">
+    <a href="mailto:2900502480@qq.com" class="email-link" data-email="2900502480@qq.com">
         CONTACT_OWNER
     </a>
 </div>
@@ -65,30 +65,42 @@
         
         <div class="window-content">
             <ul class="nav-links">
-                <li><a href="#profile">01. 个人档案 / PROFILE</a></li>
-                <li><a href="#music">02. 音乐矩阵 / AUDIO_MATRIX</a></li>
-                <li><a href="#design">03. 视觉工程 / VISUAL_LOG</a></li>
-                <li><a href="mailto:yourname@example.com">04. 建立连接 / CONNECT</a></li>
+                <li><a href="https://gemini.google.com">Gemini</a></li>
+                <li><a href="https://vercel.com">Vercel</a></li>
+                <li><a href="https://github.com">Github</a></li>
+                <li><a href="https://blog.yiloko.com">Yiloko</a></li>
             </ul>
         </div>
         
         <div class="window-footer">STATUS: SYSTEM_READY...</div>
     </div>
 </div>
-<!-- 考试倒计时 -->
-    <div class="mission-timer">
-    <div class="timer-title">TARGET: JLPT_N2_JULY</div>
-    <div class="timer-display">
-        <span id="days">000</span><small>D</small>
-        <span id="hours">00</span><small>H</small>
-        <span id="minutes">00</span><small>M</small>
-        <span id="seconds">00</span><small>S</small>
+<!-- 倒计时 -->
+ <div class="mission-timer" id="jlptTimer">
+    <div class="timer-header">
+        <span class="status-dot"></span>
+        MISSION_TARGET: JLPT_N2
     </div>
-    <div class="timer-bar"><div id="progress"></div></div>
+    <div class="timer-body">
+        <div class="time-unit">
+            <span id="days">000</span><small>D</small>
+        </div>
+        <div class="time-unit">
+            <span id="hours">00</span><small>H</small>
+        </div>
+        <div class="time-unit">
+            <span id="minutes">00</span><small>M</small>
+        </div>
+        <div class="time-unit">
+            <span id="seconds">00</span><small>S</small>
+        </div>
+    </div>
+    <div class="timer-footer">
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
 </div>
-
-
-
 
 </body>
 </html>

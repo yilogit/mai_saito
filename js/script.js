@@ -22,51 +22,19 @@ document.addEventListener('keydown', (e) => {
         document.getElementById('centerMenuOverlay').classList.remove('active');
     }
 });
-function updateCountdown() {
-    // 设定目标日期：2026年7月5日 09:00:00
-    const targetDate = new Date('2026-07-05T09:00:00').getTime();
-    const now = new Date().getTime();
-    const diff = targetDate - now;
-
-    if (diff <= 0) {
-        document.querySelector('.timer-display').innerHTML = "MISSION_START";
-        return;
-    }
-
-    // 计算天、时、分、秒
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-    // 格式化数字（补零）
-    document.getElementById('days').textContent = d.toString().padStart(3, '0');
-    document.getElementById('hours').textContent = h.toString().padStart(2, '0');
-    document.getElementById('minutes').textContent = m.toString().padStart(2, '0');
-    document.getElementById('seconds').textContent = s.toString().padStart(2, '0');
-
-    // 进度条演示逻辑（假设从180天开始倒计时）
-    const totalDays = 180; 
-    const progressPercent = Math.max(0, Math.min(100, (1 - d / totalDays) * 100));
-    document.getElementById('progress').style.width = progressPercent + "%";
-}
-
-// 每秒更新
-setInterval(updateCountdown, 1000);
-updateCountdown();
 // 播放器
-window.onload = function(){
+window.addEventListener('load', function(){
 const ap = new APlayer({
-    container: document.getElementById('aplayer'),
-    fixed: true,
-    lrcType: 0,
-    theme: '#ffffff', // 配合毛玻璃效果，使用白色主题色
+        container: document.getElementById('aplayer'),
+        fixed: true,
+        lrcType: 0,
+        theme: '#ffffff',
         audio: [
             {
                 name: '神様のいうとおり',
                 artist: 'やくしまるえつこ',
-                url: './music/神様のいうとおり.mp3', // 检查音频文件名
-                cover: './icon/kami.jpg' // 图片
+                url: './music/神様のいうとおり.mp3',
+                cover: './icon/kami.jpg'
             },
             {
                 name: 'HELP!!',
@@ -172,5 +140,52 @@ const ap = new APlayer({
             }
         ]
     });
+    // --- 任务 2：初始化 JLPT 倒计时 ---
+    initJLPTTimer();
+
+});
+
+// 倒计时逻辑函数
+function initJLPTTimer() {
+    const target = new Date('2026-07-05T09:00:00').getTime();
+    const timerContainer = document.getElementById('jlptTimer');
+    
+    // 如果页面上没找到倒计时容器，直接跳过，防止报错
+    if (!timerContainer) return;
+
+    function update() {
+        const now = new Date().getTime();
+        const diff = target - now;
+
+        if (diff <= 0) {
+            timerContainer.innerHTML = "<div style='color:#4a9540'>MISSION_STARTED</div>";
+            return;
+        }
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // 安全更新 DOM 元素
+        const dEl = document.getElementById('days');
+        const hEl = document.getElementById('hours');
+        const mEl = document.getElementById('minutes');
+        const sEl = document.getElementById('seconds');
+        const pEl = document.getElementById('progress-bar');
+
+        if (dEl) dEl.innerText = d.toString().padStart(3, '0');
+        if (hEl) hEl.innerText = h.toString().padStart(2, '0');
+        if (mEl) mEl.innerText = m.toString().padStart(2, '0');
+        if (sEl) sEl.innerText = s.toString().padStart(2, '0');
+
+        // 进度条：假设备考周期 180 天
+        if (pEl) {
+            const percent = Math.max(0, Math.min(100, (1 - d / 180) * 100));
+            pEl.style.width = percent + "%";
+        }
+    }
+
+    update();
+    setInterval(update, 1000);
 }
-  
