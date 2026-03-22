@@ -3,97 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mai_saito</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <title>TERMINAL_MOBILE - mai_saito</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+    
+    <style>
+        /* --- 基础样式 --- */
+        body {
+            background-color: #000;
+            color: #ccc;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+            padding-bottom: 100px; /* 为底部播放器留空 */
+        }
+
+        h1, h2 { color: #fff; border-left: 4px solid #8d31c2; padding-left: 10px; }
+
+        /* --- 登录终端卡片 --- */
+        .game-card {
+            border: 2px solid #8d31c2;
+            padding: 15px;
+            background: rgba(141, 49, 194, 0.1);
+            margin-bottom: 20px;
+        }
+        .input-group { margin-bottom: 10px; }
+        .input-group label { color: #8d31c2; font-weight: bold; }
+        input {
+            background: #111;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .login-btn {
+            background: #8d31c2;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* --- 菜单按钮 --- */
+        .menu-trigger {
+            background-color: #0000ff;
+            color: #adff2f;
+            border: 1px solid #adff2f;
+            padding: 8px 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* --- 学习进度标签 --- */
+        .wancheng { color: #4a9540; }
+        .wancheng::before { content: "[√] "; }
+        .weiwancheng { color: #666; }
+        .weiwancheng::before { content: "[ ] "; }
+
+        /* --- 弹出菜单样式 --- */
+        .center-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .center-overlay.active { display: flex; }
+        .center-window {
+            background: #000;
+            border: 3px solid #fff;
+            width: 85vw;
+            padding: 15px;
+            position: relative;
+        }
+        .nav-links { list-style: none; padding: 0; }
+        .nav-links li { margin: 15px 0; }
+        .nav-links a { color: #8d31c2; text-decoration: none; font-size: 1.2rem; text-shadow: 0 0 5px #8d31c2; }
+        .close-x { float: right; color: red; cursor: pointer; }
+
+        /* --- 倒计时组件 (手机优化版) --- */
+        .mission-timer {
+            background: rgba(0, 20, 0, 0.4);
+            border: 1px solid #4a9540;
+            padding: 12px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(74, 149, 64, 0.2);
+        }
+        .timer-header { color: #4a9540; font-size: 12px; margin-bottom: 8px; }
+        .status-dot { 
+            display: inline-block; width: 6px; height: 6px; 
+            background: #4a9540; border-radius: 50%; 
+            animation: blink 1s infinite; margin-right: 5px;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        .timer-body { display: flex; justify-content: space-around; color: #fff; }
+        .time-unit span { font-size: 20px; font-weight: bold; text-shadow: 0 0 8px #4a9540; }
+        .time-unit small { color: #4a9540; font-size: 10px; margin-left: 2px; }
+        .progress-container { width: 100%; height: 2px; background: #222; margin-top: 10px; }
+        #progress-bar { height: 100%; background: #4a9540; width: 0%; transition: width 1s; }
+
+        /* 隐藏联系方式前缀 */
+        .terminal-prefix { color: #8d31c2; }
+        .email-link { color: #fff; text-decoration: none; border-bottom: 1px dashed #8d31c2; }
+    </style>
 </head>
 <body>
-    <!-- 引用script -->
-    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
-    <script src="./js/script.js"></script>
-<h1>欢迎光临</h1>
+
+    <h1>欢迎光临</h1>
+
     <div class="game-card">
         <h2 style="margin-top: 0; color: #ffffff; text-shadow: 0 0 7px #ff0000,0 0 10px #8d31c2,0 0 21px #8d31c2;">终端访问</h2>
         <div class="login-terminal">
              <div class="input-group">
-                <label for="username">USER:</label>
-                <input type="text" id="username" placeholder="请输入用户名">
+                <label>USER:</label>
+                <input type="text" placeholder="请输入用户名">
             </div>
-
              <div class="input-group">
-                <label for="password">PASS:</label>
-                <input type="password" id="password" placeholder="请输入密码">
+                <label>PASS:</label>
+                <input type="password" placeholder="请输入密码">
             </div>
-
-            <button onclick="checkLogin()" class="login-btn">ENTER / 登录</button>
+            <button class="login-btn">ENTER / 登录</button>
         </div>
     </div>
-<button style="background-color: blue; color: yellowgreen;" onclick="toggleCenterMenu()">菜单</button>
+
+    <button class="menu-trigger" onclick="toggleCenterMenu()">[ 菜单 / MENU ]</button>
+
+    <div class="mission-timer" id="jlptTimer">
+        <div class="timer-header"><span class="status-dot"></span>MISSION: JLPT_N2_COUNTDOWN</div>
+        <div class="timer-body">
+            <div class="time-unit"><span id="days">000</span><small>D</small></div>
+            <div class="time-unit"><span id="hours">00</span><small>H</small></div>
+            <div class="time-unit"><span id="minutes">00</span><small>M</small></div>
+            <div class="time-unit"><span id="seconds">00</span><small>S</small></div>
+        </div>
+        <div class="progress-container"><div id="progress-bar"></div></div>
+    </div>
+
     <h2>关于我：</h2>
-    <div>
-        <h2>大学生,备战JLPT N2中</h2>
+    <div style="padding-left: 10px;">
+        <p>大学生, 备战 JLPT N2 中</p>
+        <p>联系方式: 
+            <span class="terminal-prefix">>> </span>
+            <a href="mailto:2900502480@qq.com" class="email-link">CONTACT_OWNER</a>
+        </p>
     </div>
-    联系方式:
-<div class="contact-section">
-    <span class="terminal-prefix">>> </span>
-    <a href="mailto:2900502480@qq.com" class="email-link" data-email="2900502480@qq.com">
-        CONTACT_OWNER
-    </a>
-</div>
-    <h2>学习进度</h2>
-    <ul>
-        <div class="wancheng">HTML</div>
-        <div class="wancheng">CSS</div>
-        <div class="weiwancheng">JS</div>
-        <div class="weiwancheng">N2</div>
-    </ul>
-<!-- 调用Aplayer音乐播放器 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
-    <div id="aplayer"></div>
-<div id="centerMenuOverlay" class="center-overlay" onclick="toggleCenterMenu()">
-    <div class="center-window" onclick="event.stopPropagation()">
-        <div class="window-header">
-            <span>TERMINAL_v2.0</span>
-            <span class="close-x" onclick="toggleCenterMenu()">[X]</span>
-        </div>
 
-        <div class="window-content">
+    <h2>学习进度</h2>
+    <ul style="list-style: none; padding-left: 10px;">
+        <li class="wancheng">HTML</li>
+        <li class="wancheng">CSS</li>
+        <li class="weiwancheng">JS</li>
+        <li class="weiwancheng">N2</li>
+    </ul>
+
+    <div id="aplayer"></div>
+
+    <div id="centerMenuOverlay" class="center-overlay" onclick="toggleCenterMenu()">
+        <div class="center-window" onclick="event.stopPropagation()">
+            <div style="color: #4a9540; margin-bottom: 10px;">
+                <span>TERMINAL_v2.0</span>
+                <span class="close-x" onclick="toggleCenterMenu()">[关闭]</span>
+            </div>
             <ul class="nav-links">
-                <li><a href="https://gemini.google.com">Gemini</a></li>
-                <li><a href="https://vercel.com">Vercel</a></li>
-                <li><a href="https://github.com">Github</a></li>
-                <li><a href="https://blog.yiloko.com">Yiloko</a></li>
+                <li><a href="https://gemini.google.com">01. Gemini_AI</a></li>
+                <li><a href="https://vercel.com">02. Vercel_Host</a></li>
+                <li><a href="https://github.com">03. Github_Repo</a></li>
+                <li><a href="https://blog.yiloko.com">04. Yiloko_Blog</a></li>
             </ul>
         </div>
+    </div>
 
-        <div class="window-footer">STATUS: SYSTEM_READY...</div>
-    </div>
-</div>
-<!-- 倒计时 -->
- <div class="mission-timer" id="jlptTimer">
-    <div class="timer-header">
-        <span class="status-dot"></span>
-        MISSION_TARGET: JLPT_N2
-    </div>
-    <div class="timer-body">
-        <div class="time-unit">
-            <span id="days">000</span><small>D</small>
-        </div>
-        <div class="time-unit">
-            <span id="hours">00</span><small>H</small>
-        </div>
-        <div class="time-unit">
-            <span id="minutes">00</span><small>M</small>
-        </div>
-        <div class="time-unit">
-            <span id="seconds">00</span><small>S</small>
-        </div>
-    </div>
-    <div class="timer-footer">
-        <div class="progress-container">
-            <div id="progress-bar"></div>
-        </div>
-    </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
 
+    <script>
+        // --- 1. 弹窗控制 ---
+        function toggleCenterMenu() {
+            const overlay = document.getElementById('centerMenuOverlay');
+            overlay.classList.toggle('active');
+        }
+
+        // --- 2. 统一初始化 (防冲突) ---
+        window.addEventListener('load', function() {
+            
+            // 初始化播放感
+            const ap = new APlayer({
+                container: document.getElementById('aplayer'),
+                fixed: true,
+                lrcType: 0,
+                theme: '#8d31c2',
+                audio: [
+                    { name: '神様のいうとおり', artist: 'やくしまるえつこ', url: './music/神様のいうとおり.mp3', cover: './icon/kami.jpg' },
+                    { name: 'HELP!!', artist: 'Kobo Kanaeru', url: './music/Kobo Kanaeru - HELP!! .mp3', cover: './icon/HELP!!.jpg' },
+                    { name: 'ワレワレは宇宙人だ。', artist: 'Sooda', url: './music/wareware.mp3', cover: './icon/wareware.jpg' },
+                    { name: 'ソラゴト', artist: '明透', url: './music/明透 - ソラゴト.mp3', cover: './icon/soragoto.jpg' },
+                    { name: '心拍数#0822', artist: '鹿乃', url: './music/心拍数0822.mp3', cover: './icon/shinpakusuu.jpg' },
+                    { name: 'Life We Sow', artist: 'Mili', url: './music/Life We Sow.mp3', cover: './icon/life.jpg' },
+                    { name: 'Re searchlight', artist: 'Aiobahn', url: './music/Re searchlight.mp3', cover: './icon/Re searchlight.jpg' },
+                    { name: "Steppin' Up Life!", artist: '鬼頭明里', url: "./music/Steppin'UpLife!.mp3", cover: './icon/gt.jpg' },
+                    { name: "In My Room", artist: 'キツネDJ', url: "./music/hikikomori.mp3", cover: './icon/hikikomori.jpg' },
+                    { name: "砂のこども", artist: '水瀬ましろ', url: "./music/suna.mp3", cover: './icon/suna.jpg' },
+                    { name: "ライアーメイデン", artist: 'ヤバス', url: "./music/mushi.mp3", cover: './icon/mushi.jpg' },
+                    { name: '妄想感傷代償连盟', artist: 'DECO*27/初音ミク', url: './music/妄想感伤代偿连盟.mp3', cover: './icon/msgsdslm.jpg' },
+                    { name: 'ネロイズム', artist: 'かいりきベア/鸣花ミコト', url: './music/ss.mp3', cover: './icon/ss.jpg' },
+                    { name: 'everything', artist: 'Studio "Syrup Comfiture"', url: './music/everything.mp3', cover: './icon/everything.jpg' },
+                    { name: '3253212', artist: 'reche', url: './music/3253212.mp3', cover: './icon/3253212.jpg' },
+                    { name: 'you', artist: '雪野五月', url: './music/you.mp3', cover: './icon/you.jpg' },
+                    { name: 'かみさまちゃん', artist: 'ど〜ぱみん/歌爱ユキ', url: './music/kamisama.mp3', cover: './icon/kamisama.jpg' },
+                    { name: 'オノマトペ', artist: '羽生まゐご', url: './music/オノマトペ .mp3', cover: './icon/onomatobe.jpg' }
+                ]
+            });
+
+            // 初始化倒计时
+            initCountdown();
+        });
+
+        // --- 3. 倒计时逻辑 ---
+        function initCountdown() {
+            const target = new Date('2026-07-05T09:00:00').getTime();
+            
+            function update() {
+                const now = new Date().getTime();
+                const diff = target - now;
+
+                if (diff <= 0) {
+                    document.getElementById('jlptTimer').innerHTML = "MISSION_STARTED";
+                    return;
+                }
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = d.toString().padStart(3, '0');
+                document.getElementById('hours').innerText = h.toString().padStart(2, '0');
+                document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
+                document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
+
+                const percent = Math.max(0, Math.min(100, (1 - d / 180) * 100));
+                document.getElementById('progress-bar').style.width = percent + "%";
+            }
+            update();
+            setInterval(update, 1000);
+        }
+    </script>
 </body>
 </html>
