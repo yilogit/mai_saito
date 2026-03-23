@@ -3,40 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV_STATION - 实时监控</title>
+    <title>TV_STATION</title>
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        .video-container { margin-top: 20px; border: 2px solid #4a9540; position: relative; }
-        .channel-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .back-btn { color: #8d31c2; text-decoration: none; font-size: 12px; display: block; margin-bottom: 20px; }
+        body { background: #000; color: #4a9540; padding: 20px; font-family: monospace; }
+        #video { width: 100%; border: 1px solid #4a9540; background: #111; margin-top: 10px; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .tv-btn { background: #000; color: #4a9540; border: 1px solid #4a9540; padding: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-btn"><< 返回主终端 (RETURN_HOME)</a>
-    
-    <h1>实时数据流 / LIVE_FEED</h1>
+    <a href="index.html" style="color: #8d31c2; text-decoration: none;">[ 返回主终端 ]</a>
+    <h2>>> 实时视频流接收中...</h2>
 
-    <div class="video-container">
-        <video id="video" controls style="width: 100%; display: block;"></video>
+    <video id="video" controls playsinline></video>
+
+    <div class="btn-group">
+        <button class="tv-btn" onclick="playStream('https://live-play.miguvideo.com/migu/cctv1/index.m3u8')">CCTV-1 (测试)</button>
+        <button class="tv-btn" onclick="playStream('https://live-play.miguvideo.com/migu/cctv13/index.m3u8')">CCTV-13 (新闻)</button>
     </div>
 
-    <div class="channel-list">
-        <button class="login-btn" style="border-color:#4a9540;" onclick="playM3U8('https://live-play.miguvideo.com/migu/cctv1/index.m3u8')">CCTV-1</button>
-        <button class="login-btn" style="border-color:#4a9540;" onclick="playM3U8('https://cctvtxyh5ca.cntv.myalicdn.com/live/cctv13_2/index.m3u8')">CCTV-13</button>
-        <button class="login-btn" style="border-color:#8d31c2;" onclick="alert('NHK源搜索中...')">NHK (日语学习)</button>
-    </div>
+    <p id="status" style="font-size: 12px; margin-top: 10px; color: #8d31c2;"></p>
 
     <script>
-        function playM3U8(url) {
+        var hls = new Hls();
+        function playStream(url) {
             var video = document.getElementById('video');
+            var status = document.getElementById('status');
+            status.innerText = "正在尝试连接源: " + url.substring(0, 30) + "...";
+
             if (Hls.isSupported()) {
-                var hls = new Hls();
+                hls.destroy(); // 切换频道前销毁旧实例
+                hls = new Hls();
                 hls.loadSource(url);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                    status.innerText = "STATUS: 已连接";
+                });
+                // 错误处理
+                hls.on(Hls.Events.ERROR, function (event, data) {
+                    if (data.fatal) {
+                        status.innerText = "STATUS: 连接失败 (源可能已失效)";
+                    }
+                });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // Safari 浏览器支持直接播放
                 video.src = url;
+                video.play();
             }
         }
     </script>
