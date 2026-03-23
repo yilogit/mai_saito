@@ -3,151 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL_STATION - 媒体矩阵</title>
+    <title>MEDIA_TERMINAL</title>
     <link rel="stylesheet" href="./css/style.css">
     <style>
         body {
             background-color: #000;
             color: #4a9540;
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+            margin: 0; padding: 15px;
+            display: flex; flex-direction: column; height: 100vh;
         }
 
-        /* 顶部导航块 */
-        .header-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #4a9540;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+        /* 顶部信息 */
+        .terminal-header {
+            border-bottom: 1px dashed #4a9540;
+            padding-bottom: 5px; margin-bottom: 15px;
+            display: flex; justify-content: space-between; font-size: 12px;
         }
 
-        .back-link { color: #8d31c2; text-decoration: none; font-size: 14px; }
-
-        /* 视频播放容器 */
-        .video-frame-container {
+        /* 视频主体窗口 */
+        .viewport {
             flex: 1;
             border: 2px solid #4a9540;
-            background: #111;
+            background: #050505;
+            display: flex; align-items: center; justify-content: center;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(74, 149, 64, 0.2);
+            box-shadow: inset 0 0 20px rgba(74, 149, 64, 0.2);
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        video { width: 100%; height: 100%; object-fit: contain; display: none; }
+        
+        .no-signal { color: #222; font-size: 20px; font-weight: bold; }
 
-        /* 按钮控制台：成块排列 */
-        .control-panel {
+        /* 按钮控制区：成块展示 */
+        .grid-menu {
             margin-top: 15px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 手机端每行3个按钮 */
-            gap: 8px;
+            grid-template-columns: repeat(2, 1fr); /* 手机端每行2个大块 */
+            gap: 10px;
         }
 
-        .module-btn {
-            background: #000;
-            color: #4a9540;
+        .block-btn {
+            background: #111;
             border: 1px solid #4a9540;
-            padding: 10px 5px;
-            font-size: 12px;
+            padding: 15px 10px;
+            color: #4a9540;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .module-btn:active {
-            background: #4a9540;
-            color: #000;
-        }
+        .block-btn:active { background: #4a9540; color: #000; }
 
-        /* 激活状态 */
-        .module-btn.active {
-            background: rgba(74, 149, 64, 0.3);
-            border-width: 2px;
-        }
+        .block-btn .label { font-size: 14px; font-weight: bold; display: block; }
+        .block-btn .desc { font-size: 10px; opacity: 0.6; }
 
-        /* 底部状态栏 */
-        .footer-status {
-            font-size: 10px;
-            margin-top: 10px;
-            color: #666;
+        .back-home {
+            text-align: center; margin-top: 15px; 
+            color: #8d31c2; font-size: 12px; text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="header-nav">
-        <span>[ LIVE_STREAM_MATRIX ]</span>
-        <a href="index.html" class="back-link">RETURN_HOME >></a>
+    <div class="terminal-header">
+        <span>DATA_FEED: ONLINE</span>
+        <span>REC_STATION_v3.0</span>
     </div>
 
-    <div class="video-frame-container">
-        <iframe id="mainFrame" src="about:blank"></iframe>
-        <div id="loadingTips" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:-1;">
-            SIGNAL_WAITING...
-        </div>
+    <div class="viewport" id="viewport">
+        <div class="no-signal" id="placeholder">NO_SIGNAL</div>
+        <video id="mainVideo" controls playsinline></video>
     </div>
 
-    <div class="control-panel">
+    <div class="grid-menu">
         
-        <div class="module-btn" onclick="loadModule(this, 'https://live.bilibili.com/h5/6')">
-            CCTV-NEWS
-        </div>
-        
-        <div class="module-btn" onclick="loadModule(this, 'https://b23.tv/k8zPDZ0')">
-            zi_min
+        <div class="block-btn" onclick="playLocal('./music/test.mp4', 'LOCAL_FILE_01')">
+            <span class="label">本地测试视频</span>
+            <span class="desc">./music/test.mp4</span>
         </div>
 
-        <div class="module-btn" onclick="loadModule(this, 'https://live.bilibili.com/h5/21671212')">
-            NHK_WORLD
+        <div class="block-btn" onclick="playLocal('http://你的AList地址/视频.mp4', 'ALIST_STREAM')">
+            <span class="label">AList 存储</span>
+            <span class="desc">云端直链加载</span>
         </div>
 
-        <div class="module-btn" onclick="loadModule(this, 'https://m.weibo.cn')">
-            HOT_WEIBO
+        <div class="block-btn" onclick="window.location.href='https://m.hujiang.com/jp/'">
+            <span class="label">日语学习网</span>
+            <span class="desc">外部链接跳转</span>
         </div>
 
-        <div class="module-btn" onclick="loadModule(this, 'https://m.hujiang.com/jp/')">
-            HUJIANG_JP
-        </div>
-
-        <div class="module-btn" onclick="loadModule(this, 'https://live.bilibili.com/h5/5050')">
-            5050
+        <div class="block-btn" onclick="alert('模块维护中...')">
+            <span class="label">待添加模块</span>
+            <span class="desc">EXTEND_SLOT</span>
         </div>
 
     </div>
 
-    <div class="footer-status" id="statusLog">SYSTEM_READY: WAITING_FOR_INPUT...</div>
+    <a href="index.html" class="back-home">[ EXIT_TO_MAIN_TERMINAL ]</a>
 
     <script>
-        function loadModule(btn, url) {
-            // 1. 更新 Iframe 地址
-            const frame = document.getElementById('mainFrame');
-            frame.src = url;
+        const video = document.getElementById('mainVideo');
+        const placeholder = document.getElementById('placeholder');
 
-            // 2. 更新状态文字
-            const log = document.getElementById('statusLog');
-            log.innerText = "CONNECTING_TO: " + url;
+        function playLocal(url, name) {
+            // 显示视频标签，隐藏提示文字
+            placeholder.style.display = 'none';
+            video.style.display = 'block';
+            
+            // 加载并播放
+            video.src = url;
+            video.load();
+            video.play().catch(e => {
+                console.log("需要手动点击播放");
+            });
 
-            // 3. 切换按钮高亮样式
-            document.querySelectorAll('.module-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            console.log("正在切换至模块: " + name);
         }
-
-        // 默认加载第一个频道
-        window.onload = () => {
-            const firstBtn = document.querySelector('.module-btn');
-            if(firstBtn) firstBtn.click();
-        };
     </script>
 </body>
 </html>
