@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV_STATION - 实时监控</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        .video-container { margin-top: 20px; border: 2px solid #4a9540; position: relative; }
+        .channel-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .back-btn { color: #8d31c2; text-decoration: none; font-size: 12px; display: block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn"><< 返回主终端 (RETURN_HOME)</a>
+    
+    <h1>实时数据流 / LIVE_FEED</h1>
+
+    <div class="video-container">
+        <video id="video" controls style="width: 100%; display: block;"></video>
+    </div>
+
+    <div class="channel-list">
+        <button class="login-btn" style="border-color:#4a9540;" onclick="playM3U8('https://cctvtxyh5ca.cntv.myalicdn.com/live/cctv1_2/index.m3u8')">CCTV-1</button>
+        <button class="login-btn" style="border-color:#4a9540;" onclick="playM3U8('https://cctvtxyh5ca.cntv.myalicdn.com/live/cctv13_2/index.m3u8')">CCTV-13</button>
+        <button class="login-btn" style="border-color:#8d31c2;" onclick="alert('NHK源搜索中...')">NHK (日语学习)</button>
+    </div>
+
+    <script>
+        function playM3U8(url) {
+            var video = document.getElementById('video');
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+            }
+        }
+    </script>
+</body>
+</html>
