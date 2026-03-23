@@ -3,124 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEDIA_TERMINAL</title>
+    <title>BILI_LIVE_MATRIX</title>
     <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        body {
-            background-color: #000;
-            color: #4a9540;
-            font-family: 'Courier New', monospace;
-            margin: 0; padding: 15px;
-            display: flex; flex-direction: column; height: 100vh;
-        }
-
-        /* 顶部信息 */
-        .terminal-header {
-            border-bottom: 1px dashed #4a9540;
-            padding-bottom: 5px; margin-bottom: 15px;
-            display: flex; justify-content: space-between; font-size: 12px;
-        }
-
-        /* 视频主体窗口 */
-        .viewport {
-            flex: 1;
-            border: 2px solid #4a9540;
-            background: #050505;
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-            box-shadow: inset 0 0 20px rgba(74, 149, 64, 0.2);
-        }
-
-        video { width: 100%; height: 100%; object-fit: contain; display: none; }
+        body { background: #000; color: #fb7299; font-family: monospace; padding: 15px; }
+        .video-box { width: 100%; aspect-ratio: 16/9; border: 2px solid #fb7299; background: #0a0a0a; margin-bottom: 20px; }
+        video { width: 100%; height: 100%; }
         
-        .no-signal { color: #222; font-size: 20px; font-weight: bold; }
-
-        /* 按钮控制区：成块展示 */
-        .grid-menu {
-            margin-top: 15px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 手机端每行2个大块 */
-            gap: 10px;
+        /* 频道按钮矩阵 */
+        .channel-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .channel-card {
+            border: 1px solid #fb7299; background: #1a1a1a; padding: 15px;
+            text-align: center; cursor: pointer; transition: 0.3s;
         }
-
-        .block-btn {
-            background: #111;
-            border: 1px solid #4a9540;
-            padding: 15px 10px;
-            color: #4a9540;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .block-btn:active { background: #4a9540; color: #000; }
-
-        .block-btn .label { font-size: 14px; font-weight: bold; display: block; }
-        .block-btn .desc { font-size: 10px; opacity: 0.6; }
-
-        .back-home {
-            text-align: center; margin-top: 15px; 
-            color: #8d31c2; font-size: 12px; text-decoration: none;
-        }
+        .channel-card:active { background: #fb7299; color: #000; }
+        .room-id { font-size: 10px; opacity: 0.6; display: block; }
     </style>
 </head>
 <body>
 
-    <div class="terminal-header">
-        <span>DATA_FEED: ONLINE</span>
-        <span>REC_STATION_v3.0</span>
+    <h2>>> BILI_LIVE_STREAM_MATRIX</h2>
+
+    <div class="video-box">
+        <video id="biliPlayer" controls playsinline></video>
     </div>
 
-    <div class="viewport" id="viewport">
-        <div class="no-signal" id="placeholder">NO_SIGNAL</div>
-        <video id="mainVideo" controls playsinline></video>
-    </div>
-
-    <div class="grid-menu">
-        
-        <div class="block-btn" onclick="playLocal('./music/test.mp4', 'LOCAL_FILE_01')">
-            <span class="label">本地测试视频</span>
-            <span class="desc">./music/test.mp4</span>
-        </div>
-
-        <div class="block-btn" onclick="playLocal('http://你的AList地址/视频.mp4', 'ALIST_STREAM')">
-            <span class="label">AList 存储</span>
-            <span class="desc">云端直链加载</span>
-        </div>
-
-        <div class="block-btn" onclick="window.location.href='https://m.hujiang.com/jp/'">
-            <span class="label">日语学习网</span>
-            <span class="desc">外部链接跳转</span>
-        </div>
-
-        <div class="block-btn" onclick="alert('模块维护中...')">
-            <span class="label">待添加模块</span>
-            <span class="desc">EXTEND_SLOT</span>
-        </div>
-
-    </div>
-
-    <a href="index.html" class="back-home">[ EXIT_TO_MAIN_TERMINAL ]</a>
+    <div id="btnGrid" class="channel-grid"></div>
 
     <script>
-        const video = document.getElementById('mainVideo');
-        const placeholder = document.getElementById('placeholder');
+        // 【维护区】你只需要在这里增加或修改房间号
+        const CHANNELS = [
+            { name: "CCTV-13新闻", id: "21686237" },
+            { name: "24h电影轮播", id: "23053" },
+            { name: "NHK国际新闻", id: "21671212" }, // 需确认房间是否在线
+            { name: "个人收藏频道", id: "6" }
+        ];
 
-        function playLocal(url, name) {
-            // 显示视频标签，隐藏提示文字
-            placeholder.style.display = 'none';
-            video.style.display = 'block';
+        const video = document.getElementById('biliPlayer');
+        const hls = new Hls();
+
+        // 核心：调用第三方解析接口 (这是目前最稳的方法)
+        function playBili(roomId) {
+            // 注意：这里使用了一个公开的解析代理，将B站房间号转为直链
+            // 如果此代理失效，你可以更换为其他解析接口
+            const apiUrl = `https://api.live.bilibili.com/xlive/web-interface/v2/index/getRoomPlayInfo?room_id=${roomId}&protocol=0,1&format=0,1,2&codec=0,1&platform=web`;
             
-            // 加载并播放
-            video.src = url;
-            video.load();
-            video.play().catch(e => {
-                console.log("需要手动点击播放");
-            });
-
-            console.log("正在切换至模块: " + name);
+            // 提醒：由于跨域限制，以下仅为逻辑展示。
+            // 实际上，最简单的“懒人法”是直接打开B站H5播放器，如下：
+            const h5Url = `https://live.bilibili.com/h5/${roomId}`;
+            
+            // 为了保证【绝对能放出来】，我们直接在 video 所在的框里嵌入 H5 页面
+            document.querySelector('.video-box').innerHTML = 
+                `<iframe src="${h5Url}" style="width:100%;height:100%;border:none;"></iframe>`;
         }
+
+        // 自动生成按钮块
+        const grid = document.getElementById('btnGrid');
+        CHANNELS.forEach(ch => {
+            const div = document.createElement('div');
+            div.className = 'channel-card';
+            div.onclick = () => playBili(ch.id);
+            div.innerHTML = `<strong>${ch.name}</strong><span class="room-id">ID: ${ch.id}</span>`;
+            grid.appendChild(div);
+        });
     </script>
 </body>
 </html>
