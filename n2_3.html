@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N2 読解 练习板 (n2_3)</title>
+    <style>
+        :root { --primary: #2c3e50; --bg: #fdfcfb; }
+        body { font-family: "Hiragino Sans", sans-serif; background: var(--bg); margin: 0; padding-bottom: 60px; }
+        .header { position: sticky; top: 0; background: var(--primary); color: white; padding: 10px; text-align: center; z-index: 1000; }
+        audio { width: 90%; height: 32px; }
+        .container { max-width: 600px; margin: 10px auto; padding: 0 15px; }
+        
+        /* 阅读文章卡片 */
+        .read-article { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .article-img { width: 100%; border: 1px solid #eee; border-radius: 5px; margin-top: 10px; }
+        
+        .section-title { background: #3498db; color: white; padding: 12px; font-weight: bold; border-radius: 5px 5px 0 0; }
+        .question-item { background: #fff; padding: 15px; border: 1px solid #eee; border-top: none; }
+        .q-text { font-size: 1.05rem; line-height: 1.6; font-weight: bold; color: #2c3e50; }
+        
+        .options { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .opt { border: 1px solid #ddd; padding: 12px; border-radius: 5px; background: #fff; text-align: left; font-size: 0.95rem; }
+        
+        .ans-btn { margin-top: 12px; color: #3498db; cursor: pointer; display: inline-block; font-size: 0.9rem; }
+        .ans-content { display: none; margin-top: 10px; padding: 12px; background: #e3f2fd; border-radius: 4px; border-left: 4px solid #3498db; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div style="font-size: 0.7rem;">N2 聴解音声</div>
+    <audio controls src="N2Sample.mp3"></audio>
+</div>
+
+<div class="container">
+    <div class="section-title">問題 10：内容理解（短文）</div>
+    
+    <div class="read-article">
+        <p style="font-size: 0.9rem; color: #666;">文章内容（建议截图上传至 images/read_1.jpg）</p>
+        <img src="images/read_1.jpg" alt="阅读文章截图" class="article-img" onerror="this.style.display='none';">
+        <div style="padding: 10px; border: 1px dashed #ccc; font-size: 0.95rem;">
+            （此处为文章文本提取示例）<br>
+            最近、企業の不祥事が相次いでいますが、問題を起こす企業には共通点があると思います。それは「社員を大切にしていない」ということです...
+        </div>
+    </div>
+
+    <div class="question-item">
+        <p class="q-text">問：筆者の考えによると、問題のある企業に共通していることは何か。</p>
+        <div class="options">
+            <button class="opt">1. 給料や福利厚生が不十分であること</button>
+            <button class="opt">2. 社員が仕事を通じて成長できないこと</button>
+            <button class="opt">3. 経営が成り立たないほど甘いこと</button>
+            <button class="opt">4. リーダーが社員に従っていること</button>
+        </div>
+        <span class="ans-btn" onclick="toggleAns(this)">▶ 查看答案与中日对译</span>
+        <div class="ans-content">
+            <b>正解：2</b><br><br>
+            <b>解析：</b>文章提到，比起高薪，更重要的是“通过工作获得成长”和“成就感”。出问题的企业忽视了这些（ないがしろにする）。
+        </div>
+    </div>
+
+    <div style="text-align: center; margin: 40px 0;">
+        <button onclick="window.location.href='n2_4.html'" style="background:#e74c3c; color:white; border:none; padding:15px 40px; border-radius:30px; font-weight:bold; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            最后一部分：听力脚本与答案 ➔
+        </button>
+    </div>
+</div>
+
+<script>
+    function toggleAns(btn) {
+        var content = btn.nextElementSibling;
+        content.style.display = (content.style.display === "block") ? "none" : "block";
+        btn.innerText = (content.style.display === "block") ? "▼ 隐藏解析" : "▶ 查看答案与中日对译";
+    }
+</script>
+</body>
+</html>
