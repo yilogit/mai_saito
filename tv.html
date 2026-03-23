@@ -3,42 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV_STATION</title>
+    <title>TERMINAL_STATION - 媒体矩阵</title>
     <link rel="stylesheet" href="./css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        body { background: #000; color: #4a9540; padding: 20px; font-family: monospace; }
-        #video { width: 100%; border: 1px solid #4a9540; background: #111; margin-top: 10px; }
-        .btn-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-        .tv-btn { background: #000; color: #4a9540; border: 1px solid #4a9540; padding: 10px; cursor: pointer; }
+        body {
+            background-color: #000;
+            color: #4a9540;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* 顶部导航块 */
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #4a9540;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .back-link { color: #8d31c2; text-decoration: none; font-size: 14px; }
+
+        /* 视频播放容器 */
+        .video-frame-container {
+            flex: 1;
+            border: 2px solid #4a9540;
+            background: #111;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(74, 149, 64, 0.2);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 按钮控制台：成块排列 */
+        .control-panel {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 手机端每行3个按钮 */
+            gap: 8px;
+        }
+
+        .module-btn {
+            background: #000;
+            color: #4a9540;
+            border: 1px solid #4a9540;
+            padding: 10px 5px;
+            font-size: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .module-btn:active {
+            background: #4a9540;
+            color: #000;
+        }
+
+        /* 激活状态 */
+        .module-btn.active {
+            background: rgba(74, 149, 64, 0.3);
+            border-width: 2px;
+        }
+
+        /* 底部状态栏 */
+        .footer-status {
+            font-size: 10px;
+            margin-top: 10px;
+            color: #666;
+        }
     </style>
 </head>
 <body>
-   <div class="game-card" style="border-color: #fb7299;"> <h2 style="color: #fb7299;">[ BILI_LIVE_MODULE ]</h2>
-    <div class="input-group">
-        <label>ROOM_ID:</label>
-        <input type="number" id="roomId" placeholder="输入直播间号 (如: 6)" style="border-color: #fb7299;">
-    </div>
-    <div class="btn-group">
-        <button class="tv-btn" style="border-color: #fb7299;" onclick="openBili()">连接直播间</button>
-    </div>
-    
-    <div id="biliFrameContainer" style="margin-top:15px; display:none;">
-        <iframe id="biliFrame" src="" style="width:100%; height:400px; border:1px solid #fb7299;"></iframe>
-    </div>
-</div>
 
-<script>
-function openBili() {
-    const id = document.getElementById('roomId').value;
-    if(!id) return alert("请输入房间号");
-    const frame = document.getElementById('biliFrame');
-    const container = document.getElementById('biliFrameContainer');
-    
-    // 使用B站移动端H5链接，这种链接最干净
-    frame.src = `https://live.bilibili.com/h5/${id}`;
-    container.style.display = 'block';
-}
-</script>
+    <div class="header-nav">
+        <span>[ LIVE_STREAM_MATRIX ]</span>
+        <a href="index.html" class="back-link">RETURN_HOME >></a>
+    </div>
+
+    <div class="video-frame-container">
+        <iframe id="mainFrame" src="about:blank"></iframe>
+        <div id="loadingTips" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:-1;">
+            SIGNAL_WAITING...
+        </div>
+    </div>
+
+    <div class="control-panel">
+        
+        <div class="module-btn" onclick="loadModule(this, 'https://live.bilibili.com/h5/6')">
+            CCTV-NEWS
+        </div>
+        
+        <div class="module-btn" onclick="loadModule(this, 'https://live.bilibili.com/h5/1')">
+            BILI_MAIN
+        </div>
+
+        <div class="module-btn" onclick="loadModule(this, 'https://live.bilibili.com/h5/21671212')">
+            NHK_WORLD
+        </div>
+
+        <div class="module-btn" onclick="loadModule(this, 'https://m.weibo.cn')">
+            HOT_WEIBO
+        </div>
+
+        <div class="module-btn" onclick="loadModule(this, 'https://m.hujiang.com/jp/')">
+            HUJIANG_JP
+        </div>
+
+        <div class="module-btn" onclick="loadModule(this, 'https://live.bilibili.com/h5/房间号')">
+            NEW_CHANNEL
+        </div>
+
+    </div>
+
+    <div class="footer-status" id="statusLog">SYSTEM_READY: WAITING_FOR_INPUT...</div>
+
+    <script>
+        function loadModule(btn, url) {
+            // 1. 更新 Iframe 地址
+            const frame = document.getElementById('mainFrame');
+            frame.src = url;
+
+            // 2. 更新状态文字
+            const log = document.getElementById('statusLog');
+            log.innerText = "CONNECTING_TO: " + url;
+
+            // 3. 切换按钮高亮样式
+            document.querySelectorAll('.module-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        // 默认加载第一个频道
+        window.onload = () => {
+            const firstBtn = document.querySelector('.module-btn');
+            if(firstBtn) firstBtn.click();
+        };
+    </script>
 </body>
 </html>
