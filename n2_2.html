@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N2 文法 练习板 (n2_2)</title>
+    <style>
+        :root { --primary: #2c3e50; --bg: #fdfcfb; }
+        body { font-family: "Hiragino Sans", sans-serif; background: var(--bg); margin: 0; padding-bottom: 60px; }
+        .header { position: sticky; top: 0; background: var(--primary); color: white; padding: 10px; text-align: center; z-index: 1000; }
+        audio { width: 90%; height: 32px; }
+        .container { max-width: 600px; margin: 10px auto; padding: 0 15px; }
+        .section-box { background: white; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { background: #27ae60; color: white; padding: 12px; font-weight: bold; }
+        .question-item { padding: 15px; border-bottom: 1px solid #eee; }
+        .q-text { font-size: 1.1rem; line-height: 1.8; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .opt { border: 1px solid #ddd; padding: 10px; border-radius: 5px; background: #fff; text-align: left; }
+        .ans-btn { margin-top: 10px; color: #27ae60; cursor: pointer; display: block; font-size: 0.9rem; }
+        .ans-content { display: none; margin-top: 8px; padding: 10px; background: #e8f5e9; border-radius: 4px; }
+        .star { color: #e74c3c; font-weight: bold; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div style="font-size: 0.7rem;">N2 聴解音声</div>
+    <audio controls src="N2Sample.mp3"></audio>
+</div>
+
+<div class="container">
+    <div class="section-box">
+        <div class="section-title">問題 7：文法形式の判断</div>
+        
+        <div class="question-item">
+            <p class="q-text">1. 最近、不祥事が相次いでいる。社員を大切にしない企業は、利益を( &nbsp;&nbsp;&nbsp; )、結局は失敗する。</p>
+            <div class="options">
+                <button class="opt">1. 追うばかりで</button>
+                <button class="opt">2. 追うはずで</button>
+                <button class="opt">3. 追わないまでも</button>
+                <button class="opt">4. 追うものなら</button>
+            </div>
+            <span class="ans-btn" onclick="toggleAns(this)">▶ 查看答案与解析</span>
+            <div class="ans-content">正解：1 <br>解析：「～ばかりで」表示只会...、一味地...。</div>
+        </div>
+    </div>
+
+    <div class="section-box">
+        <div class="section-title">問題 8：文の組み立て (排列组合)</div>
+        <div class="question-item">
+            <p class="q-text">2. 彼は <u>&nbsp;&nbsp;&nbsp;&nbsp;</u> <u>&nbsp;&nbsp;&nbsp;&nbsp;</u> <span class="star">★</span> <u>&nbsp;&nbsp;&nbsp;&nbsp;</u> 買っているらしい。</p>
+            <p style="font-size: 0.9rem; color: #666;">① 毎日 &nbsp; ② 飽きもせず &nbsp; ③ 宝くじを &nbsp; ④ よくもまあ</p>
+            <div class="options">
+                <button class="opt">1. ①</button><button class="opt">2. ②</button>
+                <button class="opt">3. ③</button><button class="opt">4. ④</button>
+            </div>
+            <span class="ans-btn" onclick="toggleAns(this)">▶ 查看答案与解析</span>
+            <div class="ans-content">正解：2 <br>排序：④ よくもまあ ① 毎日 ② 飽きもせず ③ 宝くじを</div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin: 30px 0;">
+        <button onclick="window.location.href='n2_3.html'" style="background:#e74c3c; color:white; border:none; padding:15px 40px; border-radius:30px; font-weight:bold;">
+            下一部分：读解练习 ➔
+        </button>
+    </div>
+</div>
+
+<script>
+    function toggleAns(btn) {
+        var content = btn.nextElementSibling;
+        content.style.display = (content.style.display === "block") ? "none" : "block";
+        btn.innerText = (content.style.display === "block") ? "▼ 隐藏内容" : "▶ 查看答案与解析";
+    }
+</script>
+</body>
+</html>
