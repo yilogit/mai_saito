@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N2 聴解 & 総括 (n2_4)</title>
+    <style>
+        :root { --primary: #2c3e50; --bg: #f4f7f6; --success: #27ae60; }
+        body { font-family: "Helvetica Neue", "Hiragino Sans", sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
+        .header { position: sticky; top: 0; background: var(--primary); color: white; padding: 10px; text-align: center; z-index: 1000; }
+        audio { width: 90%; height: 32px; }
+        .container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
+        
+        /* 听力原文卡片 */
+        .script-box { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid #f1c40f; }
+        .script-title { font-weight: bold; color: #7f8c8d; margin-bottom: 10px; font-size: 0.85rem; }
+        .script-content { line-height: 1.8; color: #34495e; font-size: 0.95rem; }
+        .speaker { font-weight: bold; color: #2980b9; margin-right: 5px; }
+        
+        /* 答案表格 */
+        .answer-table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; }
+        .answer-table th, .answer-table td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 0.9rem; }
+        .answer-table th { background: #eee; }
+
+        .final-card { background: #fff; border-radius: 10px; padding: 25px; text-align: center; border: 2px solid var(--success); }
+        .home-btn { background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div style="font-size: 0.7rem; margin-bottom: 4px;">N2 聴解音声 (全精听对照)</div>
+    <audio controls src="N2Sample.mp3"></audio>
+</div>
+
+<div class="container">
+    <h2 style="color: var(--primary); font-size: 1.2rem;">🎧 聴解スクリプト (精听练习)</h2>
+
+    <div class="script-box">
+        <div class="script-title">問題 1 - 1番</div>
+        <div class="script-content">
+            <span class="speaker">M:</span> えーと、この授業を休むときは、必ず前の日までに連絡してください。<br>
+            <span class="speaker">F:</span> メールでもいいですか。<br>
+            <span class="speaker">M:</span> はい、いいですよ。あ、それから、休んだときは、私の研究室の前の掲示を見て、宿題を確認してください。友達に聞いたりしないで、自分で確かめてちゃんとやってきてくださいね。
+        </div>
+    </div>
+
+    <div class="script-box">
+        <div class="script-title">問題 1 - 2番</div>
+        <div class="script-content">
+            <span class="speaker">M:</span> 出張の準備、大変そうだね。手伝おうか。<br>
+            <span class="speaker">F:</span> 助かるー！こっち、まだ終わんなくってー。それ、そこの箱に入れといてくんない？
+        </div>
+    </div>
+
+    <hr style="margin: 30px 0; border: 0; border-top: 2px dashed #ccc;">
+
+    <h2 style="color: var(--primary); font-size: 1.2rem;">✅ 全卷答案汇总 (Quick Check)</h2>
+    <div style="overflow-x: auto;">
+        <table class="answer-table">
+            <tr><th>部分</th><th>题目</th><th>答案</th></tr>
+            <tr><td>文字・語彙</td><td>1 - 5</td><td>1, 2, 4, 4, 3</td></tr>
+            <tr><td>文法</td><td>7 - 8</td><td>1, 2</td></tr>
+            <tr><td>読解</td><td>10 (問1)</td><td>2</td></tr>
+            <tr><td>聴解</td><td>問題1</td><td>3, 2</td></tr>
+        </table>
+    </div>
+
+    <br><br>
+
+    <div class="final-card">
+        <h3 style="margin-top:0; color: var(--success);">🎉 练习完成！</h3>
+        <p style="font-size: 0.9rem; color: #666;">恭喜你完成了 2025年7月 N2 模拟练习。<br>建议针对错题回到对应的 n2_x.html 重新查看解析。</p>
+        <a href="index.html" class="home-btn">返回首页</a>
+    </div>
+</div>
+
+</body>
+</html>
