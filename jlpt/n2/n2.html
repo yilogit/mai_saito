@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JLPT N2 综合考场</title>
+    <style>
+        .reading-section { background: #fff; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primary); margin: 20px 0; line-height: 1.8; }
+.reading-section b { color: var(--accent); }
+        :root { --primary: #2c3e50; --accent: #e74c3c; --bg: #f4f7f6; --correct: #27ae60; --wrong: #e74c3c; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: "Helvetica Neue", "Hiragino Sans", sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; color: #333; }
+        .nav-header { position: sticky; top: 0; background: var(--primary); color: white; padding: 10px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .nav-tabs { display: flex; justify-content: space-around; font-size: 0.8rem; margin-top: 5px; }
+        .tab { padding: 5px 10px; border-radius: 15px; opacity: 0.6; }
+        .tab.active { opacity: 1; background: rgba(255,255,255,0.2); font-weight: bold; }
+        .audio-bar { background: #34495e; color: white; padding: 10px; display: none; align-items: center; justify-content: center; }
+        audio { width: 100%; height: 35px; }
+        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+        .q-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; }
+/* 阅读文章专用样式 */
+.reading-text {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    line-height: 1.8;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+.reading-title {
+    font-weight: bold;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+        .q-type-label { position: absolute; top: 0; right: 0; background: #eee; font-size: 0.7rem; padding: 2px 8px; border-radius: 0 12px 0 8px; color: #666; }
+        .q-text { font-size: 1.1rem; line-height: 1.6; margin-bottom: 15px; font-weight: 500; }
+        .q-text u { text-decoration: underline; text-underline-offset: 5px; font-weight: bold; }
+        .options { display: grid; gap: 10px; }
+        .opt { border: 2px solid #f0f0f0; padding: 14px; border-radius: 10px; background: #fff; text-align: left; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
+        .opt.selected { border-color: #3498db; background: #ebf5ff; }
+        .opt.correct { background: var(--correct) !important; color: white; border-color: var(--correct); }
+        .opt.wrong { background: var(--wrong) !important; color: white; border-color: var(--wrong); }
+        .footer-tools { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; z-index: 999; }
+        .btn { border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+        .btn-next { background: var(--accent); color: white; }
+        .explanation { display: none; margin-top: 15px; padding: 12px; background: #fff9db; border-radius: 8px; font-size: 0.9rem; color: #856404; }
+    </style>
+</head>
+<body>
+
+<div class="nav-header">
+    <div style="text-align:center; font-weight:bold;">JLPT N2 综合模拟卷</div>
+    <div class="nav-tabs">
+        <div class="tab active" id="tab-0">文字・語彙</div>
+        <div class="tab" id="tab-1">文法</div>
+        <div class="tab" id="tab-2">読解</div>
+        <div class="tab" id="tab-3">聴解</div>
+    </div>
+    <div class="audio-bar" id="audio-container">
+        <audio id="main-audio" controls src="N2Sample.mp3"></audio>
+    </div>
+</div>
+
+<div class="container" id="main-display">
+    </div>
+
+<div class="footer-tools">
+    <div id="progress-text" style="font-size:0.8rem; color:#666;">Section 1 / 4</div>
+    <button class="btn btn-next" onclick="submitCurrentSection()" id="action-btn">提交本卷</button>
+</div>
+
+<script>
+    // 题目数据
+    const quizData = [
+{
+        sectionTitle: "【文字・語彙】",
+        questions: [
+            { id: 1, type: "読み", text: "1. 戦後、日本は<u>貧しい</u>時代を経験した。", options: ["まずしい", "きびしい", "けわしい", "はげしい"], ans: 1, info: "貧しい（まずしい）：贫穷的" },
+            { id: 2, type: "読み", text: "2. この黒い<u>種</u>からどんな花がさくのだろうか。", options: ["だね", "たね", "じゅ", "しゅ"], ans: 2, info: "種（たね）：种子" },
+            { id: 3, type: "表記", text: "3. 今日は、ごみの<u>しゅうしゅう</u>日ですか。", options: ["拾集", "修集", "取集", "収集"], ans: 4, info: "収集（しゅうしゅう）：收集" },
+            { id: 4, type: "表記", text: "4. このカメラはデザインも性能も<u>すぐれて</u>いる。", options: ["超れて", "恵れて", "秀れて", "優れて"], ans: 4, info: "優れる（すぐれる）：优秀、卓越" },
+            { id: 5, type: "語形成", text: "5. 新しい商品を売るために、彼は毎日忙しく飛び( &nbsp;&nbsp; )いる。", options: ["かかって", "かけて", "まわって", "ままわして"], ans: 3, info: "飛び回る：到处奔走" },
+            { id: 6, type: "語形成", text: "6. あの映画の最後は ( &nbsp;&nbsp; ) 場面として知られている。", options: ["名", "高", "良", "真"], ans: 1, info: "名場面（めいばめん）：名场面" },
+            { id: 7, type: "文脈規定", text: "7. 日本人の平均( &nbsp;&nbsp; )は、男性が79歳、女性が86歳である。", options: ["生命", "寿命", "人生", "一生"], ans: 2, info: "寿命（じゅみょう）：寿命 [cite: 1]" },
+            { id: 8, type: "文脈規定", text: "8. CDの売り上げは3年 ( &nbsp;&nbsp; ) で減少しているそうだ。", options: ["連続", "接続", "持続", "相続"], ans: 1, info: "連続（れんぞく）：连续 [cite: 2]" },
+            { id: 9, type: "近義詞", text: "9. 田中さんは<u>単なる</u>友人です。", options: ["大切な", "一生の", "ただの", "唯一の"], ans: 3, info: "単なる ＝ ただの：单纯、只是 [cite: 2]" },
+            { id: 10, type: "近義詞", text: "10. あの人のお母さんはいつも<u>ほがらか</u>です。", options: ["おとなしい", "まじめ", "りっぱ", "あかるい"], ans: 4, info: "ほがらか：性格开朗、欢快 [cite: 2]" },
+            { id: 11, type: "用法", text: "11. <b>余計</b>", options: ["一人暮らしだと野菜がすぐ余計になってしまう。", "話が複雑になるから、余計なことは言わないで。", "余計があったら、ひとつ貸してもらえませんか。", "このごろ仕事が忙しくて、遊びに行く余計がない。"], ans: 2, info: "余計（よけい）：多余 [cite: 2]" },
+            { id: 12, type: "用法", text: "12. <b>率直</b>", options: ["あの人は率直に仕事をしているので、評判がいい。", "この申込書にはあなたの住所を率直に書いてください。", "このアンケートには、皆様のご意見を率直にお書きください。", "お客様からの苦情には率直に対応する必要がある。"], ans: 3, info: "率直（そっちょく）：直率、坦率 [cite: 2]" } ]
+    },
+{
+    sectionTitle: "【文法】",
+    questions: [
+        { id: 13, type: "语法选择", text: "13. 最終のバスに間に合わなくて困っていた( &nbsp;&nbsp; )、運よくタクシーが通りかかり、無事帰宅できた。", options: ["あげくに", "ために", "とたんに", "ところに"], ans: 4, info: "～ところに：正当...的时候 [cite: 2]" },
+        { id: 14, type: "语法选择", text: "14. 親が他人をいつも( &nbsp;&nbsp; )子どもも人をうらやむようになるというのが父の口癖だった。", options: ["うらやんでばかりいると", "うらやんでばかりいても", "うらやんだだけだと", "うらやんだだけでも"], ans: 1, info: "～てばかりいる：光是...、总是... [cite: 2]" },
+        { id: 15, type: "★排列", text: "15. ふだん感情を表に出さない彼が <u>&nbsp;&nbsp;</u> <u>&nbsp;&nbsp;</u> <span style='color:red'>★</span> <u>&nbsp;&nbsp;</u> ほど良いことがあったのだろう。<br><small>①みると ②ところを ③いる ④喜んで</small>", options: ["①", "②", "③", "④"], ans: 1, info: "正确顺序：④③②① (喜んでいるところをみると)。[cite: 3]" },
+        { id: 16, type: "★排列", text: "16. 田中選手が今シーズン <u>&nbsp;&nbsp;</u> <u>&nbsp;&nbsp;</u> <span style='color:red'>★</span> <u>&nbsp;&nbsp;</u> ニュースを見て驚いた。<br><small>①彼の怪我 ②活躍するのを ③楽しみに待っていた ④だけに</small>", options: ["①", "②", "③", "④"], ans: 2, info: "正确顺序：③④①② (楽しみに待っていただけに彼の怪我が活躍するのを…此处需结合语境)。[cite: 3]" }
+    ]
+},
+{
+            sectionTitle: "【読解】",
+            article: `
+                <div class="reading-section">
+                    <p><b>問題10（短編）：</b><br>
+                    最近、仕事でミスをすることを極端に恐れる若者が増えているという。しかし、最初から完璧にできる人などいない。ミスをすることで、どこが悪かったのか、次はどうすればいいのかを考えるきっかけになる。失敗を経験せずに成長することは難しい。大切なのは、ミスを隠さず、そこから何を学ぶかということだ。</p>
+                </div>
+                <hr>
+                <div class="reading-section">
+                    <p><b>問題11（中編）：企業のあり方</b><br>
+                    最近、企業の不祥事が相次いでいますが、問題を起こす企業には共通点があると思います。それは「社員を大切にしていない」ということです。「社員を大切にする」とは、給料が高いとか、福利厚生を充実させるということではなく、仕事を通じて成長できるとか、仲間と協力して物事を成し遂げる達成感が感じられるといったことです。問題のある企業はこれらをないがしろにし、利益だけしか見ていないのです。</p>
+                </div>
+                <hr>
+                <div class="reading-section">
+                    <p><b>問題12（長編）：能力特性の分析</b><br>
+                    「仕事ができる人」と「できない人」の違いは、「自分の能力特性の分析」がうまいかどうかだ。得意な仕事を積極的にこなし、不得意な仕事からは上手に逃げている人が、実は「できる人」と評価されるのだ。反対に、何でも完璧にこなそうとして、不得意なことに時間を費やしている人は、結果として大きな成果を上げられないことが多い。仕事ができる人は、まず自分ができることを見極め、そこに力を集中させているのである。</p>
+                </div>
+                <hr>
+                <div class="reading-section">
+                    <p><b>問題13（情報検索）：グッド・トイ選定規定</b><br>
+                    【応募対象】市場で市販されている玩具（手作り不可）<br>
+                    【締め切り】9月30日（当日消印有効）<br>
+                    【審査料】1点につき5,000円<br>
+                    【発表】11月上旬に本人に通知するほか、ホームページで公開する。<br>
+                    ※選定された玩具には「グッド・トイ」マークの使用が認められます。</p>
+                </div>
+            `,
+            questions: [
+                // 短編 (問題10)
+                { id: 40, type: "短編理解", text: "40. 筆者が最も言いたいことは何か。", options: ["若者はもっと慎重にすべきだ", "ミスを隠すのは悪いことではない", "失敗から学ぶことが成長に不可欠だ", "最初から完璧を目指すべきだ"], ans: 3, info: "解析：文末强调从错误中学习的重要性。" },
+                // 中編 (問題11)
+                { id: 41, type: "中編理解", text: "41. 文中の「社員を大切にする」とはどういうことか。", options: ["給料をできるだけ高くすること", "福利厚生のメニューを増やすこと", "仕事で達成感や成長を感じさせること", "不祥事を起こさないように監視すること"], ans: 3, info: "解析：原文明确指出不仅是薪水，更在于成长感。" },
+                { id: 42, type: "中編理解", text: "42. 筆者は問題のある企業についてどう述べているか。", options: ["経営が成り立っていない", "利益のみを追求し、社員を軽視している", "甘いことばかり言っている", "リーダーシップが強すぎる"], ans: 2, info: "解析：原文「利益だけしか見ていない」「ないがしろにしている」。" },
+                // 長編 (問題12)
+                { id: 43, type: "長編理解", text: "43. 筆者によると「仕事ができる人」の共通点は何か。", options: ["全ての仕事を一人でこなす", "不得意なことを克服する努力をする", "自分の能力を分析し、得意分野に集中する", "新しい仕事に次々と挑戦する"], ans: 3, info: "解析：关键在于「能力特性の分析」和「得意な仕事を積極的にこなす」。" },
+                { id: 44, type: "長編理解", text: "44. 成果を上げられない人について、筆者はどう考えているか。", options: ["分析に時間をかけすぎている", "仕事のスピードが遅すぎる", "不慣れなことに固執して時間を無駄にしている", "自分の能力を過大評価している"], ans: 3, info: "解析：原文提到「不得意なことに時間を費やしている」。" },
+                // 情報検索 (問題13)
+                { id: 45, type: "情報検索", text: "45. 「グッド・トイ」に応募したい場合、正しいものはどれか。", options: ["自分が手作りした自信作を送る", "10月1日に郵送しても間に合う", "1点ごとに5,000円を支払う", "マークの使用には別途11月の許可が必要だ"], ans: 3, info: "解析：1项禁止手作，2项逾期，4项选定即获得标志使用权。" }
+            ]
+        },   
+    {
+            sectionTitle: "【聴解】",
+            audio: "N2Sample.mp3", // 请确保文件夹中有此文件
+            questions: [
+                { 
+                    id: 42, 
+                    type: "課題理解", 
+                    text: "<b>1番：</b>学生は、授業を休んだとき、どのように宿題を確認しますか。", 
+                    options: ["先生にメールを送る", "友達に電話して聞く", "研究室の前の掲示を見る", "次の授業の時に先生に聞く"], 
+                    ans: 3, 
+                    info: "【原文】先生：休んだときは、私の研究室の前の掲示を見て、宿題を確認してください。友達に聞いたりしないで、自分で確かめてください。" 
+                },
+                { 
+                    id: 43, 
+                    type: "ポイント理解", 
+                    text: "<b>2番：</b>男の人は、箱に何を入れますか。", 
+                    options: ["商品カタログ", "案内状", "飛行機のチケット", "名刺"], 
+                    ans: 2, 
+                    info: "【原文】女：その横にある案内状、それを箱に入れて。カタログは飛行機の中で見たいから別にしといて。" 
+                },
+                { 
+                    id: 44, 
+                    type: "概要理解", 
+                    text: "<b>3番：</b>女の人は、男の人のレポートについて何と言っていますか。", 
+                    options: ["内容が新しくて良い", "構成がわかりやすい", "もっと短くすべきだ", "調査が不十分だ"], 
+                    ans: 1, 
+                    info: "【原文】女：視点がユニークで、今までにない切り口ですね。とてもおもしろいですよ。" 
+                },
+                { 
+                    id: 45, 
+                    type: "即時応答", 
+                    text: "<b>4番：</b>「あ、小林さん。先日の資料、助かりましたよ。」", 
+                    options: ["どういたしまして", "お大事に", "こちらこそ、すみません", "それはよかったです"], 
+                    ans: 1, 
+                    info: "【解析】对方表示感谢，最合适的回答是“不客气”。" 
+                }
+            ]
+        }
+];
+
+    let currentSection = 0;
+    let userAnswers = {};
+
+    function initQuiz() { renderSection(0); }
+
+    function renderSection(sectionIdx) {
+    const section = quizData[sectionIdx];
+    const display = document.getElementById('main-display');
+    const audioBar = document.getElementById('audio-container');
+    
+    // 更新导航标签状态
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === sectionIdx));
+    
+    // 控制音频栏显示
+    audioBar.style.display = section.audio ? 'flex' : 'none';
+
+    // 1. 先生成章节标题
+    let html = `<h2 style="font-size:1.2rem; margin-bottom:20px;">${section.sectionTitle}</h2>`;
+    
+    // 2. 关键修复：如果这卷有文章内容，先渲染文章框
+    if (section.article) {
+        html += `<div class="reading-section">${section.article}</div>`;
+    }
+
+    // 3. 渲染题目卡片
+    section.questions.forEach((q, qIdx) => {
+        const savedAns = userAnswers[`${sectionIdx}-${qIdx}`];
+        const isSubmitted = section.isSubmitted;
+        
+        html += `
+            <div class="q-card" id="q-${sectionIdx}-${qIdx}">
+                <span class="q-type-label">${q.type}</span>
+                <div class="q-text">${q.text}</div>
+                <div class="options">
+                    ${q.options.map((opt, optIdx) => {
+                        let statusClass = "";
+                        if (isSubmitted) {
+                            if (optIdx + 1 === q.ans) statusClass = "correct";
+                            else if (savedAns === optIdx + 1) statusClass = "wrong";
+                        } else if (savedAns === optIdx + 1) {
+                            statusClass = "selected";
+                        }
+                        return `<button class="opt ${statusClass}" onclick="selectOption(${sectionIdx}, ${qIdx}, ${optIdx + 1})">
+                                    ${optIdx + 1}. ${opt}
+                                </button>`;
+                    }).join('')}
+                </div>
+                <div class="explanation" id="exp-${sectionIdx}-${qIdx}" style="display: ${isSubmitted ? 'block' : 'none'}">
+                    ${q.info || ''}
+                </div>
+            </div>`;
+    });
+    
+    display.innerHTML = html;
+    
+    // 更新底部按钮文字
+    const actionBtn = document.getElementById('action-btn');
+    if (section.isSubmitted) {
+        actionBtn.innerText = (sectionIdx === quizData.length - 1) ? "查看最终总分" : "下一卷";
+    } else {
+        actionBtn.innerText = "提交本卷";
+    }
+    window.scrollTo(0, 0);
+}
+
+    function selectOption(sIdx, qIdx, optVal) {
+        if (quizData[sIdx].isSubmitted) return;
+        userAnswers[`${sIdx}-${qIdx}`] = optVal;
+        const card = document.getElementById(`q-${sIdx}-${qIdx}`);
+        card.querySelectorAll('.opt').forEach((btn, i) => btn.classList.toggle('selected', (i + 1) === optVal));
+    }
+
+    function submitCurrentSection() {
+        const section = quizData[currentSection];
+        if (!section.isSubmitted) {
+            section.isSubmitted = true;
+            showSectionResults(currentSection);
+            // 如果是最后一卷，提交后直接改按钮文字为“查看总分”
+            if (currentSection === quizData.length - 1) {
+                document.getElementById('action-btn').innerText = "查看最终总分";
+            } else {
+                document.getElementById('action-btn').innerText = "下一卷";
+            }
+        } else {
+            if (currentSection < quizData.length - 1) {
+                currentSection++;
+                renderSection(currentSection);
+            } else {
+                // 这里调用之前写好的计算分数函数
+                calculateTotalScore();
+            }
+        }
+    }
+
+    // 确保你的代码里有这个函数（如果没有请加上）
+    function calculateTotalScore() {
+        let total = 0;
+        let correct = 0;
+        quizData.forEach((s, sIdx) => {
+            s.questions.forEach((q, qIdx) => {
+                total++;
+                if (userAnswers[`${sIdx}-${qIdx}`] === q.ans) correct++;
+            });
+        });
+        const percent = Math.round((correct / total) * 100);
+        alert(`🎉 考试结束！\n\n总题数：${total}\n正确数：${correct}\n正确率：${percent}%\n\n你可以重新翻阅各卷查看解析。`);
+    }
+
+    function showSectionResults(sIdx) {
+        quizData[sIdx].questions.forEach((q, qIdx) => {
+            const card = document.getElementById(`q-${sIdx}-${qIdx}`);
+            const userAns = userAnswers[`${sIdx}-${qIdx}`];
+            card.querySelector('.explanation').style.display = 'block';
+            card.querySelectorAll('.opt').forEach((btn, i) => {
+                if ((i + 1) === q.ans) btn.classList.add('correct');
+                if (userAns === (i + 1) && userAns !== q.ans) btn.classList.add('wrong');
+            });
+        });
+    }
+    initQuiz();
+</script>
+</body>
+</html>
